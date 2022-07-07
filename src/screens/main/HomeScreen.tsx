@@ -4,7 +4,7 @@ import { AddIcon, SearchIcon, Trash } from '../../assets'
 import SearchBar from '../../components/SearchBar'
 import { NavigationProp } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteRecipe, fetchRecipes } from '../../redux/actions/recipe'
+import { deleteRecipe, fetchRecipes, selectRecipe } from '../../redux/actions/recipe'
 import { RootStore } from '../../redux/store'
 import DeleteConfirmationModal from '../../components/DeleteConfirmationModal'
 
@@ -21,12 +21,17 @@ const HomeScreen = ({navigation}: Props) => {
   }, [])
   
   return (
-    <ScrollView>
+    <ScrollView style={{
+      flex: 1,
+      backgroundColor: 'white'
+    }}>
     <DeleteConfirmationModal
       isVisible={deleteMode}
       onClose={() => setDeleteMode(false)}
       onDelete={() => {
-        dispatch(deleteRecipe(selectedItem.id))
+        dispatch(deleteRecipe(selectedItem._id, () => {
+          setDeleteMode(false)
+        }))
       }}
     />
     <View style={{marginHorizontal: 24}}>
@@ -70,7 +75,10 @@ const HomeScreen = ({navigation}: Props) => {
           marginTop: 15
         }}>
           {recipes.map((val, index) => (
-            <TouchableOpacity activeOpacity={0.6}>
+            <TouchableOpacity activeOpacity={0.6} onPress={() => {
+              dispatch(selectRecipe(val))
+              navigation.navigate('Detail')
+            }}>
             <View style={{
               flexDirection: 'row',
               backgroundColor: 'white',
@@ -89,10 +97,13 @@ const HomeScreen = ({navigation}: Props) => {
                elevation: 3,
             }}>
               <View style={{flex:1}}>
-                  <Text>{val.name}</Text>
-                <Text>{val.description}</Text>
+                <Text style={styles.textName}>{val.name}</Text>
+                <Text style={styles.textDescription}>{val.description}</Text>
               </View> 
-              <TouchableOpacity activeOpacity={0.6} onPress={() => setDeleteMode(true)}>
+              <TouchableOpacity activeOpacity={0.6} onPress={() => {
+                setDeleteMode(true)
+                setSelectedItem(val)
+              }}>
                 <Image source={Trash} style={{
                   width: 25,
                   height: 32,
@@ -110,4 +121,15 @@ const HomeScreen = ({navigation}: Props) => {
 
 export default HomeScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  textName: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Black',
+    color: 'black',
+  },
+  textDescription: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+    color: 'black'
+  }
+})

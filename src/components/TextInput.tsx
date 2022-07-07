@@ -50,7 +50,6 @@ const TextInput = ({placeholder, value, onChangeText, containerStyle, onPress, r
           value={value}
           onChangeText={onChangeText}
           placeholderTextColor='#787878'
-          multiline={true}
           {...restProps}
         />
         {error !== '' && (

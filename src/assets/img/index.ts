@@ -11,6 +11,8 @@ import MinImg from './icon/minus.png';
 import LogoFull from './icon/LogoFull.png';
 import Trash from './icon/trash.png';
 import DeleteIcon from './icon/delete.png';
+import Back from './icon/back.png';
+
 export {
     IcHomeOff,
     IcHomeOn,
@@ -24,5 +26,6 @@ export {
     MinImg,
     LogoFull,
     Trash,
+    Back,
     DeleteIcon
 }

@@ -47,6 +47,17 @@ type SignInActionParam = {
     navigation: NavigationProp<any>
 }
 
+export const test = () => (dispatch:Dispatch) => {
+    dispatch(setIsLoading(true))
+    Axios.get('https://jsonplaceholder.typicode.com/todos/1')
+        .then((data: any) => {
+            console.log("Sukses");
+            dispatch(setIsLoading(false))
+        }).catch((err) => {
+            console.log(err)
+            dispatch(setIsLoading(false))
+        })
+}
 export const signIn = ({email, password, navigation}: SignInActionParam) => (dispatch: Dispatch) => {
     dispatch(setIsLoading(true))
     Axios.post(`${API_URL}/auth/login`, {
@@ -61,12 +72,13 @@ export const signIn = ({email, password, navigation}: SignInActionParam) => (dis
             routes: [{name: 'Main'}]
         })
     }).catch((err: any) => {
+        console.log(err.response.data)
+        dispatch(setIsLoading(false))
         showMessage({
             message: `Signing in error : ${err.response?.data.message}`,
             type: 'danger',
             duration: 1000
         })
-        dispatch(setIsLoading(false))
     })
 }
 

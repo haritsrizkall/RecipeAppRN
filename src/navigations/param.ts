@@ -2,6 +2,8 @@ export type RootStackParamList = {
     SplashScreen: {},
     Auth: {},
     Main: {},
+    Detail: {},
+    Edit: {}
 }
 
 export type AuthStackParamList = {

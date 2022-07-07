@@ -7,7 +7,7 @@ import { getData } from "../../storage";
 import { Recipe } from "../reducers/recipe";
 import { setIsLoading } from "./global";
 
-export const addRecipe = (recipe: Omit<Recipe, "userId" |"createdAt" | "updatedAt" | "id">, navigation: NavigationProp<any>, cb: any) => async (dispatch: Dispatch<any>) => {
+export const addRecipe = (recipe: Omit<Recipe, "userId" |"createdAt" | "updatedAt" | "_id">, navigation: NavigationProp<any>, cb: any) => async (dispatch: Dispatch<any>) => {
     dispatch(setIsLoading(true));
     const token = await getData("token");
     try {
@@ -25,9 +25,8 @@ export const addRecipe = (recipe: Omit<Recipe, "userId" |"createdAt" | "updatedA
             payload: resp.data.data
         })
         dispatch(setIsLoading(false))
-        console.log(resp.data)
         showMessage({
-            message: `Success add transaction`,
+            message: `Success add recipe`,
             type: 'success',
         })
         cb();
@@ -36,12 +35,51 @@ export const addRecipe = (recipe: Omit<Recipe, "userId" |"createdAt" | "updatedA
         dispatch(setIsLoading(false))
         console.log('error', err)
         showMessage({
-            message: `Adding transaction error ${err.response?.data?.message}`,
+            message: `Adding recipe error ${err.response?.data?.message}`,
             type: 'danger',
         })
     }
 }
 
+export const updateRecipe = (recipe: Omit<Recipe, "userId" | "createdAt" | "updatedAt">, navigation: NavigationProp<any>, cb: any) =>async (dispatch:Dispatch<any>) => {
+    dispatch(setIsLoading(true));
+    const token = await getData("token");
+    try {
+        const resp: any = await Axios.put(
+            `${API_URL}/recipes/${recipe._id}`,
+            recipe,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            },
+        ) 
+        dispatch({
+            type: "UPDATE_RECIPE",
+            payload: recipe
+        })
+        dispatch(setIsLoading(false))
+        showMessage({
+            message: `Success update recipe`,
+            type: 'success',
+        })
+        cb();
+        navigation.goBack();
+    } catch (err: any) {
+        dispatch(setIsLoading(false))
+        console.log('error', err)
+        showMessage({
+            message: `Updating recipe error ${err.response?.data?.message}`,
+            type: 'danger',
+        })
+    }
+}
+export const selectRecipe = (recipe: any) => {
+    return {
+        type: "SELECT_RECIPE",
+        payload: recipe
+    }
+}
 export const fetchRecipes = () => async (dispatch: Dispatch<any>) => {
     dispatch(setIsLoading(true))
     try {
@@ -79,15 +117,25 @@ export const cogserv = async (photo: any) => {
                 "Content-Type": "multipart/form-data",
             }
         })
+        if (resp.data.data == "No Recognized Text") {
+            showMessage({
+                message: `No Recognized Text`,
+                type: 'danger',
+            })
+        }
         console.log(resp.data.data)
         return resp.data.data
     }catch(err) {
         console.log(err)
+        showMessage({
+            message: `OCR error`,
+            color: 'danger',
+        })
     }
 }
 
-export const deleteRecipe = (id: string) => async (dispatch: Dispatch<any>) => {
-    dispatch(setIsLoading(false))
+export const deleteRecipe = (id: string, cb?: any) => async (dispatch: Dispatch<any>) => {
+    dispatch(setIsLoading(true))
     try {
         const token = await getData("token");
         const resp: any = await Axios.delete(`${API_URL}/recipes/${id}`, {
@@ -105,7 +153,9 @@ export const deleteRecipe = (id: string) => async (dispatch: Dispatch<any>) => {
             message: `Success delete recipe`,
             type: 'success',
         })
-
+        if (cb !== undefined) {
+            cb();
+        }
     } catch (error) {
         console.log(error)
         dispatch(setIsLoading(false))

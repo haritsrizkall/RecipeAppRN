@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import TextInput from '../../components/TextInput'
 import Button from '../../components/Button'
 import { NavigationProp } from '@react-navigation/native'
-import { signIn } from '../../redux/actions/auth'
+import { signIn, test } from '../../redux/actions/auth'
 import { useDispatch } from 'react-redux'
 
 type Props = {
@@ -43,7 +43,7 @@ const LoginScreen = ({navigation}: Props) => {
               error={emailError}
             />
             <TextInput 
-              placeholder="Password"
+              placeholder="Passwords"
               value={password}
               onChangeText={setPassword}
               restProps={{

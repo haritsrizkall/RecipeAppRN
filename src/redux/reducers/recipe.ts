@@ -1,5 +1,5 @@
 export type Recipe = {
-    id: string,
+    _id: string,
     userId: string,
     name: string,
     description: string,
@@ -11,6 +11,7 @@ export type Recipe = {
 
 type StateRecipeType = {
     recipes: Recipe[],
+    selectedRecipe: Recipe,
 }
 
 export enum RecipeActionType {
@@ -18,6 +19,7 @@ export enum RecipeActionType {
     ADD_RECIPE = 'ADD_RECIPE',
     DELETE_RECIPE = 'DELETE_RECIPE',
     UPDATE_RECIPE = 'UPDATE_RECIPE',
+    SELECT_RECIPE = 'SELECT_RECIPE',
 }
 
 export type RecipeAction = {
@@ -27,6 +29,16 @@ export type RecipeAction = {
 
 const initStateRecipe: StateRecipeType = {
     recipes: [],
+    selectedRecipe: {
+        _id: '',
+        userId: '',
+        name: '',
+        description: '',
+        ingredients: [],
+        steps: [],
+        createdAt: '',
+        updatedAt: '',
+    }
 }
 
 export const recipeReducer = (state: StateRecipeType = initStateRecipe, action: RecipeAction): StateRecipeType => {
@@ -44,12 +56,21 @@ export const recipeReducer = (state: StateRecipeType = initStateRecipe, action: 
         case RecipeActionType.DELETE_RECIPE:
             return {
                 ...state,
-                recipes: state.recipes.filter(recipe => recipe.id !== action.payload)
+                recipes: state.recipes.filter(recipe => recipe._id !== action.payload)
             }
         case RecipeActionType.UPDATE_RECIPE:
             return {
                 ...state,
-                recipes: state.recipes.map(recipe => recipe.id === action.payload.id ? action.payload : recipe)
+                recipes: state.recipes.map(recipe => recipe._id === action.payload._id ? action.payload : recipe),
+                selectedRecipe: {
+                    ...state.selectedRecipe,
+                    ...action.payload
+                }
+            }
+        case RecipeActionType.SELECT_RECIPE:
+            return {
+                ...state,
+                selectedRecipe: action.payload
             }
         default:
             return state;

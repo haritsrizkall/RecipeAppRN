@@ -9,6 +9,7 @@ import { addRecipe, cogserv } from '../../redux/actions/recipe'
 import ImageCropPicker from 'react-native-image-crop-picker'
 import { setIsLoading } from '../../redux/actions'
 import { NavigationProp } from '@react-navigation/native'
+import Header from '../../components/Header'
 
 type Props = {
   navigation: NavigationProp<any>
@@ -99,14 +100,11 @@ const AddScreen = ({navigation}: Props) => {
         setIngredientsPhoto(photo)
         dispatch(setIsLoading(true))
         cogserv(body).then(res => {
-          console.log('==========================')
-          console.log(res)
           dispatch(setIsLoading(false))
-          if (res.length > 0) {
+          if (res.length > 0 && res !== 'No Recognized Text') {
             setIngredients(res)
           }
         }).catch((err) => {
-          console.log('==========================')
           console.log(err)
           dispatch(setIsLoading(false))
         })
@@ -133,7 +131,7 @@ const AddScreen = ({navigation}: Props) => {
       cogserv(body).then(res => {
         console.log(res)
         dispatch(setIsLoading(false))
-        if (res.length > 0) {
+        if (res.length > 0 && res !== 'No Recognized Text') {
           setSteps(res)
         }
       }).catch((err) => {
@@ -144,6 +142,7 @@ const AddScreen = ({navigation}: Props) => {
   }
   return (
       <ScrollView style={styles.container}>
+        <Header text='Add Recipe'/>
         <View style={styles.content}> 
                   <View>
                       <Text style={styles.label}>Recipe Name</Text>
@@ -299,7 +298,7 @@ content: {
 },
 label: {
     fontSize: 14,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Black',
     color: 'black',
 },
 buttonContainer: {
