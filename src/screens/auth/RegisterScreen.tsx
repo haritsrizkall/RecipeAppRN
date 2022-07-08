@@ -54,7 +54,7 @@ const RegisterScreen = ({navigation}: Props) => {
               value={password}
               onChangeText={setPassword}
               restProps={{
-                secureTextEntry: false
+                secureTextEntry: true
               }}
             />
         </View>

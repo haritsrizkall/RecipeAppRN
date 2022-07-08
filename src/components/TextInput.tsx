@@ -10,9 +10,10 @@ type Props = {
     onPress?: () => void,
     error?: string,
     textInputStyle?: ViewStyle, 
+    multiline?: boolean
 }
 
-const TextInput = ({placeholder, value, onChangeText, containerStyle, onPress, restProps, error, textInputStyle}: Props) => {
+const TextInput = ({placeholder, value, onChangeText, containerStyle, onPress, restProps, error, textInputStyle, multiline=false}: Props) => {
   return (
     <>
     {onPress ? (
@@ -30,6 +31,7 @@ const TextInput = ({placeholder, value, onChangeText, containerStyle, onPress, r
           value={value}
           onChangeText={onChangeText}
           placeholderTextColor= '#787878'
+          multiline={multiline}
           {...restProps}
         />
       </TouchableOpacity>
@@ -50,6 +52,7 @@ const TextInput = ({placeholder, value, onChangeText, containerStyle, onPress, r
           value={value}
           onChangeText={onChangeText}
           placeholderTextColor='#787878'
+          multiline={multiline}
           {...restProps}
         />
         {error !== '' && (

@@ -2,7 +2,12 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import { SearchIcon } from '../assets'
 
-const SearchBar = () => {
+type Props = {
+  onChangeText: (text: string) => void
+  value: string
+}
+
+const SearchBar = ({onChangeText, value}: Props) => {
   return (
     <View style={{
         flexDirection: 'row',
@@ -22,7 +27,7 @@ const SearchBar = () => {
           width: 20,
           height: 20
         }}/>
-        <TextInput placeholder='Search...'/>
+        <TextInput placeholder='Search...' value={value} onChangeText={onChangeText}/>
       </View>
   )
 }

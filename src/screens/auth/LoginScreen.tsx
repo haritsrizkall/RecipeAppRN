@@ -43,7 +43,7 @@ const LoginScreen = ({navigation}: Props) => {
               error={emailError}
             />
             <TextInput 
-              placeholder="Passwords"
+              placeholder="Password"
               value={password}
               onChangeText={setPassword}
               restProps={{

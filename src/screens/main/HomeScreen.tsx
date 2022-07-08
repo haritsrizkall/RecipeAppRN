@@ -15,6 +15,7 @@ const HomeScreen = ({navigation}: Props) => {
   const recipes = useSelector((state: RootStore) => state.recipeReducer.recipes)
   const [deleteMode, setDeleteMode] = useState(false)
   const [selectedItem, setSelectedItem] = useState<any>()
+  const [search, setSearch] = useState('')
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchRecipes())
@@ -40,7 +41,7 @@ const HomeScreen = ({navigation}: Props) => {
           flexDirection: 'row',
         }}>
           <View style={{flex: 1}}>
-            <SearchBar/>
+            <SearchBar value={search} onChangeText={setSearch}/>
           </View>
           <TouchableOpacity 
             activeOpacity={0.5}
@@ -74,7 +75,7 @@ const HomeScreen = ({navigation}: Props) => {
         <View style={{
           marginTop: 15
         }}>
-          {recipes.map((val, index) => (
+          {recipes.filter(recipe => recipe.name.toLowerCase().includes(search.toLowerCase())).map((val, index) => (
             <TouchableOpacity activeOpacity={0.6} onPress={() => {
               dispatch(selectRecipe(val))
               navigation.navigate('Detail')

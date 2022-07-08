@@ -166,7 +166,7 @@ const AddScreen = ({navigation}: Props) => {
                       marginBottom: 10
                     }}>Ingredients</Text>
                     <TouchableOpacity onPress={takeImageIngredients}>
-                      <Text>Take a photo</Text>
+                      <Text style={styles.takePhoto}>Take a photo</Text>
                     </TouchableOpacity>
                     {ingredients.map((val, index) => {
                       return (
@@ -182,6 +182,7 @@ const AddScreen = ({navigation}: Props) => {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                               }}
+                              multiline={true}
                               containerStyle={{
                               }}
                               value={val}
@@ -202,15 +203,15 @@ const AddScreen = ({navigation}: Props) => {
                     })}
                   </View>
                     <TouchableOpacity onPress={onAddIngredients}>
-                            <Text>Add more</Text>
-                    </TouchableOpacity>
+                            <Text style={styles.takePhoto}>Add more</Text>
+                          </TouchableOpacity>
                   <View>
                     <Text style={{
                       ...styles.label,
                       marginBottom: 10
                     }}>Steps</Text>
                     <TouchableOpacity onPress={takeImageSteps}>
-                      <Text>Take a photo</Text>
+                      <Text style={styles.takePhoto}>Take a photo</Text>
                     </TouchableOpacity>
                     {steps.map((val, index) => {
                       return (
@@ -226,6 +227,7 @@ const AddScreen = ({navigation}: Props) => {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                               }}
+                              multiline={true}
                               containerStyle={{
                               }}
                               value={val}
@@ -245,7 +247,7 @@ const AddScreen = ({navigation}: Props) => {
                     })}
                   </View>
                     <TouchableOpacity onPress={onAddSteps}>
-                            <Text>Add more</Text>
+                            <Text style={styles.takePhoto}>Add more</Text>
                     </TouchableOpacity>
                   <View style={styles.buttonContainer}>
                       <Button 
@@ -306,5 +308,9 @@ buttonContainer: {
     marginTop: 10,
     justifyContent: 'flex-end',
     marginBottom: 20,
+},
+takePhoto: {
+  fontFamily: 'Poppins-Regular',
+  color: 'black',
 }
 })

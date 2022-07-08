@@ -2,9 +2,10 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { ProfileImg } from '../../assets'
 import { NavigationProp } from '@react-navigation/native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../components/Button'
 import { signOut } from '../../redux/actions/auth'
+import { RootStore } from '../../redux/store'
 
 type Props = {
   navigation: NavigationProp<any>
@@ -12,6 +13,8 @@ type Props = {
 
 const ProfileScreen = ({navigation}: Props) => {
   const dispatch = useDispatch()
+  const user = useSelector((state: RootStore) => state.authReducer.user)
+  console.log(user)
   const onSubmit = () => {
     console.log('OUT')
     dispatch(signOut({navigation}))
@@ -23,7 +26,7 @@ const ProfileScreen = ({navigation}: Props) => {
           source={ProfileImg} 
           style={styles.profileImg}
         />
-        <Text style={styles.name}>Harits Rizkal Aliamdy</Text>
+        <Text style={styles.name}>{user.name}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <Button 
